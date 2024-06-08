@@ -1,11 +1,8 @@
 import os
 import requests
 from tqdm import tqdm
-from colorama import Fore, init
-import tkinter as tk
-from tkinter import messagebox, ttk
-
-init(autoreset=True)
+from tkinter import messagebox
+import customtkinter as ctk
 
 SEASONS = {
     "Pre-BattleRoyale": {
@@ -170,32 +167,34 @@ def download_selected_seasons(selected_seasons):
                     download_file(url, season, filename)
 
 def start_download():
-    selected_seasons = [season for season, var in checkboxes.items() if var.get()]
+    selected_seasons = [season for season, var in checkboxes.items() if var.get() == "on"]
     if not selected_seasons:
         messagebox.showwarning("Selection Error", "Please select at least one season to download.")
         return
     download_selected_seasons(selected_seasons)
 
 if __name__ == "__main__":
-    root = tk.Tk()
+    ctk.set_appearance_mode("System")  # Modes: "System" (default), "Dark", "Light"
+    ctk.set_default_color_theme("blue")  # Themes: "blue" (default), "green", "dark-blue"
+
+    root = ctk.CTk()
     root.title("Season Downloader")
+    root.geometry("400x600")
 
-    main_frame = ttk.Frame(root, padding="10")
-    main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+    main_frame = ctk.CTkFrame(root)
+    main_frame.pack(pady=20, padx=20, fill="both", expand=True)
 
-    instructions = ttk.Label(main_frame, text="Select the seasons you want to download:")
-    instructions.grid(row=0, column=0, columnspan=2, pady="10")
+    instructions = ctk.CTkLabel(main_frame, text="Select the seasons you want to download:", font=("Arial", 16))
+    instructions.pack(pady=10)
 
     checkboxes = {}
-    row = 1
     for season in SEASONS.keys():
-        var = tk.BooleanVar()
-        checkbox = ttk.Checkbutton(main_frame, text=season, variable=var)
-        checkbox.grid(row=row, column=0, sticky=tk.W)
+        var = ctk.StringVar(value="off")
+        checkbox = ctk.CTkCheckBox(main_frame, text=season, variable=var, onvalue="on", offvalue="off")
+        checkbox.pack(anchor="w", pady=5)
         checkboxes[season] = var
-        row += 1
 
-    download_button = ttk.Button(main_frame, text="Download Selected Seasons", command=start_download)
-    download_button.grid(row=row, column=0, columnspan=2, pady="10")
+    download_button = ctk.CTkButton(main_frame, text="Download Selected Seasons", command=start_download)
+    download_button.pack(pady=20)
 
     root.mainloop()
