@@ -177,6 +177,3 @@ if __name__ == "__main__":
     selected_seasons = [season.strip() for season in selected_seasons]
     download_selected_seasons(selected_seasons)
 
-
-
- # Hello! 
