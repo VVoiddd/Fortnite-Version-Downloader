@@ -175,8 +175,9 @@ def start_download():
 
 def make_transparent(event):
     root.attributes('-alpha', 0.8)
+    root.after(100, make_opaque)  # Delayed call to make_opaque
 
-def make_opaque(event):
+def make_opaque():
     root.attributes('-alpha', 1.0)
 
 if __name__ == "__main__":
@@ -189,7 +190,6 @@ if __name__ == "__main__":
 
     # Make window transparent while moving and resizing
     root.bind("<Configure>", make_transparent)
-    root.bind("<Configure>", lambda event: root.after(100, make_opaque))
 
     main_frame = ctk.CTkFrame(root)
     main_frame.pack(pady=20, padx=20, fill="both", expand=True)
