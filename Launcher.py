@@ -173,6 +173,12 @@ def start_download():
         return
     download_selected_seasons(selected_seasons)
 
+def make_transparent(event):
+    root.attributes('-alpha', 0.8)
+
+def make_opaque(event):
+    root.attributes('-alpha', 1.0)
+
 if __name__ == "__main__":
     ctk.set_appearance_mode("System")  # Modes: "System" (default), "Dark", "Light"
     ctk.set_default_color_theme("blue")  # Themes: "blue" (default), "green", "dark-blue"
@@ -180,6 +186,10 @@ if __name__ == "__main__":
     root = ctk.CTk()
     root.title("Season Downloader")
     root.geometry("400x600")
+
+    # Make window transparent while moving and resizing
+    root.bind("<Configure>", make_transparent)
+    root.bind("<Configure>", lambda event: root.after(100, make_opaque))
 
     main_frame = ctk.CTkFrame(root)
     main_frame.pack(pady=20, padx=20, fill="both", expand=True)
