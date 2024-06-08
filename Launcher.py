@@ -176,5 +176,3 @@ if __name__ == "__main__":
     selected_seasons = input("Enter the seasons you want to download, separated by commas: ").split(',')
     selected_seasons = [season.strip() for season in selected_seasons]
     download_selected_seasons(selected_seasons)
-
- # bye
