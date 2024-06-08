@@ -2,6 +2,8 @@ import os
 import requests
 from tqdm import tqdm
 from colorama import Fore, init
+import tkinter as tk
+from tkinter import messagebox, ttk
 
 init(autoreset=True)
 
@@ -154,25 +156,46 @@ def download_file(url, season, filename):
                 file.write(data)
         t.close()
         if total_size != 0 and t.n != total_size:
-            print(Fore.RED + f"ERROR: Something went wrong downloading {filename}")
+            messagebox.showerror("Download Error", f"ERROR: Something went wrong downloading {filename}")
         else:
-            print(Fore.GREEN + f"SUCCESS: Downloaded {filename}")
+            messagebox.showinfo("Download Success", f"SUCCESS: Downloaded {filename}")
     except requests.exceptions.RequestException as e:
-        print(Fore.RED + f"ERROR: {e}")
+        messagebox.showerror("Download Error", f"ERROR: {e}")
 
 def download_selected_seasons(selected_seasons):
     for season in selected_seasons:
         if season in SEASONS:
-            print(Fore.CYAN + f"Downloading files for {season}...")
             for filename, url in SEASONS[season].items():
                 if url:
                     download_file(url, season, filename)
 
-if __name__ == "__main__":
-    print("Available seasons:")
-    for season in SEASONS.keys():
-        print(f"- {season}")
-
-    selected_seasons = input("Enter the seasons you want to download, separated by commas: ").split(',')
-    selected_seasons = [season.strip() for season in selected_seasons]
+def start_download():
+    selected_seasons = [season for season, var in checkboxes.items() if var.get()]
+    if not selected_seasons:
+        messagebox.showwarning("Selection Error", "Please select at least one season to download.")
+        return
     download_selected_seasons(selected_seasons)
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.title("Season Downloader")
+
+    main_frame = ttk.Frame(root, padding="10")
+    main_frame.grid(row=0, column=0, sticky=(tk.W, tk.E, tk.N, tk.S))
+
+    instructions = ttk.Label(main_frame, text="Select the seasons you want to download:")
+    instructions.grid(row=0, column=0, columnspan=2, pady="10")
+
+    checkboxes = {}
+    row = 1
+    for season in SEASONS.keys():
+        var = tk.BooleanVar()
+        checkbox = ttk.Checkbutton(main_frame, text=season, variable=var)
+        checkbox.grid(row=row, column=0, sticky=tk.W)
+        checkboxes[season] = var
+        row += 1
+
+    download_button = ttk.Button(main_frame, text="Download Selected Seasons", command=start_download)
+    download_button.grid(row=row, column=0, columnspan=2, pady="10")
+
+    root.mainloop()
