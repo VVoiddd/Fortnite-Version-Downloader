@@ -26,20 +26,6 @@ The **Fortnite Version Downloader** is a streamlined command-line utility design
 
 A big thank you to the Fortnite community and everyone who supports the preservation of gaming history.
 
-## Updates on 6/7/2024
+## Updates on 6/17/2024
 
-### Enhancements
-
-- **Improved User Experience**: Reduced lag when moving the window and added semi-transparency when resizing or moving the window for a smoother experience.
-
-### Code Changes
-
-- **Transparency Control**: Implemented functions to control window transparency during resizing and moving:
-  - Added `make_transparent` function to make the window semi-transparent when resizing or moving.
-  - Modified `make_opaque` function to remove the `event` parameter and adjusted the call inside `make_transparent` to use `after` correctly.
-
-### README.md Update
-
-- Added a section detailing the enhancements and code changes made on 6/7/2024.
-- Updated the project description to reflect the latest improvements in user experience.
-- Included acknowledgements to the Fortnite community and supporters of gaming history preservation.
+### Broke Most Of Everything But Im Gonna Fix It All Soon <3
